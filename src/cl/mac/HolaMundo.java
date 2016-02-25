@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 import java.sql.Statement;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -93,18 +94,25 @@ public class HolaMundo extends HttpServlet {
     
     public void doPost(HttpServletRequest req, HttpServletResponse res)
       throws ServletException, IOException  {
+        
+      UsuarioBean usuarioBean = new UsuarioBean();  
+        
+      RequestDispatcher a = null;  
       res.setContentType("text/html");
-      PrintWriter out = res.getWriter();
+      //PrintWriter out = res.getWriter();
 
-      String cadena = req.getParameter("TEXTO"); 
+      String user = req.getParameter("user"); 
+      String password = req.getParameter("password"); 
 
-        System.out.println("cadena"+cadena);
-
-      out.println("<html>");
-      out.println("<body>");
-      out.println("<h1>Post"+cadena+"</h1>");
-      out.println("</body>");
-      out.println("</html>");
+      if (user.equals("user") && password.equals("password")){
+          usuarioBean.setNombre("Carlos");
+          req.setAttribute("usuario", usuarioBean);
+          a = req.getRequestDispatcher("home.jsp");
+      }
+      else{
+          a = req.getRequestDispatcher("errorLogin.jsp");
+      }
+      a.forward(req, res);
     }
     
 
